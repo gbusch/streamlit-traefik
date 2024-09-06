@@ -1,0 +1,22 @@
+services:
+  traefik:
+    build:
+      context: .
+      dockerfile: ./traefik/Dockerfile
+    volumes:
+      - traefik:/etc/traefik/acme:z
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+  streamlit:
+    build: 
+      context: .
+      dockerfile: ./streamlit/Dockerfile
+    container_name: streamlit_app
+    restart: always
+    expose:
+      - "8501"
+    command: ["streamlit", "run", "/root/src/app.py", "--server.baseUrlPath=/dashboard"]
+  
+volumes:
+  traefik: {}
